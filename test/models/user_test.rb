@@ -21,22 +21,22 @@ describe User do
 
   describe "validations" do
     it "requires a username" do
-      user = User.new
+      user = User.new(uid: 1, provider:"github")
       expect(user.valid?).must_equal false
       expect(user.errors.messages).must_include :username
     end
 
-    it "requires a unique username" do
-      username = "test username"
-      user1 = User.new(username: username)
+    it "requires a unique uid" do
+      uid = 1
+      user1 = User.new(username: "a", uid: 1, provider: 'github')
 
       # This must go through, so we use create!
       user1.save!
 
-      user2 = User.new(username: username)
+      user2 = User.new(username: "a", uid: 1, provider: 'github')
       result = user2.save
       expect(result).must_equal false
-      expect(user2.errors.messages).must_include :username
+      expect(user2.errors.messages).must_include :uid
     end
   end
 end
